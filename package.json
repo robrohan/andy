@@ -1,0 +1,47 @@
+{
+  "name": "andy",
+  "version": "0.1.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:robrohan/andy.git"
+  },
+  "author": {
+    "name": "Rob Rohan",
+    "email": "rob@therohans.com",
+    "url": "https://robrohan.com"
+  },
+  "scripts": {
+    "build": "npx parcel build src/andy.ts",
+    "start": "npx parcel serve src/index.html",
+    "test": ""
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.13.0",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.2.1",
+    "typescript": "^3.7.4"
+  },
+  "eslintConfig": {
+    "extends": "google",
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "env": {
+      "es6": true
+    },
+    "overrides": [
+      {
+        "files": [
+          "src/*.js"
+        ],
+        "excludedFiles": "*.test.js"
+      }
+    ],
+    "rules": {
+      "require-jsdoc": "off"
+    }
+  },
+  "dependencies": {}
+}
