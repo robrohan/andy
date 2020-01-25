@@ -4,7 +4,7 @@ start:
 
 build: clean
 	npm run build
-	cp src/index.html dist/index.html
+	rm dist/*.wav
 
 clean:
 	rm -rf dist
