@@ -6,6 +6,7 @@
     "type": "git",
     "url": "git@github.com:robrohan/andy.git"
   },
+  "main": "dist/andy.js",
   "author": {
     "name": "Rob Rohan",
     "email": "rob@therohans.com",
