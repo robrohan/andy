@@ -8,6 +8,7 @@
   },
   "main": "dist/andy.js",
   "typings": "dist/andy.d.ts",
+  "types": "dist/andy.d.ts",
   "author": {
     "name": "Rob Rohan",
     "email": "rob@therohans.com",

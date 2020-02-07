@@ -39,10 +39,12 @@ var Sound = (function () {
         if (!this.isInContext) {
             throw new Error('Sound not in context');
         }
-        this.source.start(time);
+        if (this.source)
+            this.source.start(time);
     };
     Sound.prototype.stop = function () {
-        this.source.stop();
+        if (this.source)
+            this.source.stop();
     };
     return Sound;
 }());
@@ -116,7 +118,8 @@ var SoundSystem = (function () {
     SoundSystem.prototype.playSound = function (sound, time) {
         if (time === void 0) { time = 0; }
         sound.setContext(SoundSystem.soundContext);
-        sound.node.connect(SoundSystem.masterGainNode);
+        if (sound.node)
+            sound.node.connect(SoundSystem.masterGainNode);
         sound.play(time);
     };
     SoundSystem.prototype.handleStateChange = function (e) {

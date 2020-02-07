@@ -9,7 +9,7 @@ export declare class Sound {
     private volume;
     private panner;
     setContext(context: AudioContext): void;
-    get node(): AudioNode;
+    get node(): AudioNode | undefined;
     play(time?: number): void;
     stop(): void;
 }

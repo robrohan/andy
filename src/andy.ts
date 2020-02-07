@@ -17,9 +17,9 @@ export class Sound {
     this.loop = false;
   }
 
-  private source: AudioBufferSourceNode;
-  private volume: GainNode;
-  private panner: PannerNode;
+  private source: AudioBufferSourceNode | undefined;
+  private volume: GainNode | undefined;
+  private panner: PannerNode | undefined;
 
   setContext(context: AudioContext) {
     this.volume = context.createGain();
@@ -43,7 +43,7 @@ export class Sound {
     this.panner.coneOuterGain = 0;
   }
 
-  get node(): AudioNode {
+  get node(): AudioNode | undefined {
     return (this.isMusic) ? this.volume : this.panner;
   }
 
@@ -51,11 +51,13 @@ export class Sound {
     if (!this.isInContext) {
       throw new Error('Sound not in context');
     }
-    this.source.start(time);
+    if(this.source)
+      this.source.start(time);
   }
 
   stop() {
-    this.source.stop();
+    if(this.source)
+      this.source.stop();
   }
 }
 
@@ -135,7 +137,8 @@ export class SoundSystem {
 
   private playSound(sound: Sound, time: number = 0) {
     sound.setContext(SoundSystem.soundContext);
-    sound.node.connect(SoundSystem.masterGainNode);
+    if(sound.node)
+      sound.node.connect(SoundSystem.masterGainNode);
     sound.play(time);
   }
 
