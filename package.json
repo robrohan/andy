@@ -7,13 +7,14 @@
     "url": "git@github.com:robrohan/andy.git"
   },
   "main": "dist/andy.js",
+  "typings": "dist/andy.d.ts",
   "author": {
     "name": "Rob Rohan",
     "email": "rob@therohans.com",
     "url": "https://robrohan.com"
   },
   "scripts": {
-    "build": "npx parcel build src/andy.ts",
+    "build": "tsc",
     "start": "npx parcel serve src/index.html",
     "test": ""
   },

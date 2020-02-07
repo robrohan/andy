@@ -1,9 +1,28 @@
 {
   "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    
+    "outDir": "dist",
+    "declaration": true,
+
+    "strict": true,
+
+    "target": "es5",
     "baseUrl": "./src",
     "paths": {
-      "~*": ["./*"]
+      "~*": [
+        "./*"
+      ]
     },
+    "lib": [
+      "es6",
+      "DOM"
+    ],
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ],
 }

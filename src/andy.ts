@@ -14,6 +14,7 @@ export class Sound {
 
   constructor(buffer: AudioBuffer) {
     this.buffer = buffer;
+    this.loop = false;
   }
 
   private source: AudioBufferSourceNode;
@@ -48,7 +49,7 @@ export class Sound {
 
   play(time: number = 0) {
     if (!this.isInContext) {
-      Log.error('Sound not in context');
+      throw new Error('Sound not in context');
     }
     this.source.start(time);
   }
@@ -113,7 +114,7 @@ export class SoundSystem {
 
   public decodeSound(data: ArrayBuffer): Promise<AudioBuffer> {
     return new Promise<AudioBuffer>((res, rej) => {
-      let buffer: AudioBuffer = undefined;
+      let buffer: AudioBuffer;
       if (SoundSystem.soundContext) {
         SoundSystem.soundContext.decodeAudioData(data, (ab: AudioBuffer) => {
             buffer = ab;

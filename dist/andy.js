@@ -1,6 +1,146 @@
-parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcelRequire,u="function"==typeof require&&require;function f(t,n){if(!r[t]){if(!e[t]){var i="function"==typeof parcelRequire&&parcelRequire;if(!n&&i)return i(t,!0);if(o)return o(t,!0);if(u&&"string"==typeof t)return u(t);var c=new Error("Cannot find module '"+t+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[t][1][r]||r},p.cache={};var l=r[t]=new f.Module(t);e[t][0].call(l.exports,p,l,l.exports,this)}return r[t].exports;function p(e){return f(p.resolve(e))}}f.isParcelRequire=!0,f.Module=function(e){this.id=e,this.bundle=f,this.exports={}},f.modules=e,f.cache=r,f.parent=o,f.register=function(r,t){e[r]=[function(e,r){r.exports=t},{}]};for(var c=0;c<t.length;c++)try{f(t[c])}catch(e){i||(i=e)}if(t.length){var l=f(t[t.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=l:"function"==typeof define&&define.amd?define(function(){return l}):n&&(this[n]=l)}if(parcelRequire=f,i)throw i;return f}({"nLy0":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.xhr=function(e,r,t,n){void 0===r&&(r="GET");var d=new Headers;d.append("User-Agent","Mesh/1.0"),t&&(d.append("Accept",t),d.append("Content-Type",t));var o=new Request(e,{method:r,cache:"reload",mode:"cors",credentials:"same-origin",headers:d,body:n});return fetch(o)};
-},{}],"khZ4":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=require("./Xhr"),t=function(){function n(n){this.isInContext=!1,this.isPlaying=!1,this.isMusic=!1,this.buffer=n}return n.prototype.setContext=function(n){this.volume=n.createGain(),this.panner=n.createPanner(),this.source=n.createBufferSource(),this.source.connect(this.volume),this.volume.connect(this.panner),this.source.buffer=this.buffer,this.source.loop=this.loop,this.isInContext=!0,this.panner.panningModel="HRTF",this.panner.distanceModel="inverse",this.panner.refDistance=1,this.panner.maxDistance=1e3,this.panner.rolloffFactor=1,this.panner.coneInnerAngle=360,this.panner.coneOuterAngle=0,this.panner.coneOuterGain=0},Object.defineProperty(n.prototype,"node",{get:function(){return this.isMusic?this.volume:this.panner},enumerable:!0,configurable:!0}),n.prototype.play=function(n){void 0===n&&(n=0),this.isInContext||Log.error("Sound not in context"),this.source.start(n)},n.prototype.stop=function(){this.source.stop()},n}();exports.Sound=t;var e=function(){return function(){}}();exports.SoundSystemOptions=e;var o=function(){function n(n){this.reboot()}return n.addSoundToContext=function(n,t){t.setContext(n)},n.prototype.reboot=function(){var t=this;try{var e=window.webkitAudioContext||window.AudioContext||!1;e?(n.soundContext&&n.soundContext.suspend(),n.soundContext=new e,n.soundContext.onstatechange=this.handleStateChange,n.masterGainNode=n.soundContext.createGain(),n.masterGainNode.connect(n.soundContext.destination),window.addEventListener("focus",function(n){console.log("Resume Play"),t.resumePlay()})):console.error("Web Audio API is not supported in this browser")}catch(o){console.error("Error creating Web Audio context",o)}},n.prototype.adjustVolume=function(t){n.masterGainNode.gain.value=t},n.prototype.play=function(n,t,e){void 0===t&&(t=!1),void 0===e&&(e=0),n.loop=t,this.playSound(n,e)},n.prototype.decodeSound=function(t){return new Promise(function(e,o){n.soundContext&&n.soundContext.decodeAudioData(t,function(n){e(n)},function(n){console.error(n),o(n)})})},n.prototype.resumePlay=function(){return n.soundContext.resume()},n.prototype.playSound=function(t,e){void 0===e&&(e=0),t.setContext(n.soundContext),t.node.connect(n.masterGainNode),t.play(e)},n.prototype.handleStateChange=function(t){n.soundContext&&"running"!==n.soundContext.state&&this.resumePlay()},n}();exports.SoundSystem=o,exports.loadSound=function(e,o){return new Promise(function(r,i){n.xhr(e,"GET").then(function(n){return n.arrayBuffer()}).then(function(n){o.decodeSound(n).then(function(n){var e=new t(n);e.buffer=n,r(e)},function(n){i(n)}).catch(function(n){return console.error(n)})}).catch(function(n){return console.error(n)})})};
-},{"./Xhr":"nLy0"}]},{},["khZ4"], null)
-//# sourceMappingURL=/andy.js.map
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Xhr_1 = require("./Xhr");
+var Sound = (function () {
+    function Sound(buffer) {
+        this.isInContext = false;
+        this.isPlaying = false;
+        this.isMusic = false;
+        this.buffer = buffer;
+        this.loop = false;
+    }
+    Sound.prototype.setContext = function (context) {
+        this.volume = context.createGain();
+        this.panner = context.createPanner();
+        this.source = context.createBufferSource();
+        this.source.connect(this.volume);
+        this.volume.connect(this.panner);
+        this.source.buffer = this.buffer;
+        this.source.loop = this.loop;
+        this.isInContext = true;
+        this.panner.panningModel = 'HRTF';
+        this.panner.distanceModel = 'inverse';
+        this.panner.refDistance = 1;
+        this.panner.maxDistance = 1000;
+        this.panner.rolloffFactor = 1;
+        this.panner.coneInnerAngle = 360;
+        this.panner.coneOuterAngle = 0;
+        this.panner.coneOuterGain = 0;
+    };
+    Object.defineProperty(Sound.prototype, "node", {
+        get: function () {
+            return (this.isMusic) ? this.volume : this.panner;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Sound.prototype.play = function (time) {
+        if (time === void 0) { time = 0; }
+        if (!this.isInContext) {
+            throw new Error('Sound not in context');
+        }
+        this.source.start(time);
+    };
+    Sound.prototype.stop = function () {
+        this.source.stop();
+    };
+    return Sound;
+}());
+exports.Sound = Sound;
+var SoundSystemOptions = (function () {
+    function SoundSystemOptions() {
+    }
+    return SoundSystemOptions;
+}());
+exports.SoundSystemOptions = SoundSystemOptions;
+var SoundSystem = (function () {
+    function SoundSystem(settings) {
+        this.reboot();
+    }
+    SoundSystem.addSoundToContext = function (context, sound) {
+        sound.setContext(context);
+    };
+    SoundSystem.prototype.reboot = function () {
+        var _this = this;
+        try {
+            var AudioContext_1 = window.webkitAudioContext
+                || window.AudioContext
+                || false;
+            if (AudioContext_1) {
+                if (SoundSystem.soundContext) {
+                    SoundSystem.soundContext.suspend();
+                }
+                SoundSystem.soundContext = new AudioContext_1();
+                SoundSystem.soundContext.onstatechange = this.handleStateChange;
+                SoundSystem.masterGainNode = SoundSystem.soundContext.createGain();
+                SoundSystem.masterGainNode.connect(SoundSystem.soundContext.destination);
+                window.addEventListener('focus', function (event) {
+                    console.log('Resume Play');
+                    _this.resumePlay();
+                });
+            }
+            else {
+                console.error('Web Audio API is not supported in this browser');
+            }
+        }
+        catch (e) {
+            console.error('Error creating Web Audio context', e);
+        }
+    };
+    SoundSystem.prototype.adjustVolume = function (by) {
+        SoundSystem.masterGainNode.gain.value = by;
+    };
+    SoundSystem.prototype.play = function (sound, loop, time) {
+        if (loop === void 0) { loop = false; }
+        if (time === void 0) { time = 0; }
+        sound.loop = loop;
+        this.playSound(sound, time);
+    };
+    SoundSystem.prototype.decodeSound = function (data) {
+        return new Promise(function (res, rej) {
+            var buffer;
+            if (SoundSystem.soundContext) {
+                SoundSystem.soundContext.decodeAudioData(data, function (ab) {
+                    buffer = ab;
+                    res(buffer);
+                }, function (error) {
+                    console.error(error);
+                    rej(error);
+                });
+            }
+        });
+    };
+    SoundSystem.prototype.resumePlay = function () {
+        return SoundSystem.soundContext.resume();
+    };
+    SoundSystem.prototype.playSound = function (sound, time) {
+        if (time === void 0) { time = 0; }
+        sound.setContext(SoundSystem.soundContext);
+        sound.node.connect(SoundSystem.masterGainNode);
+        sound.play(time);
+    };
+    SoundSystem.prototype.handleStateChange = function (e) {
+        if (SoundSystem.soundContext && SoundSystem.soundContext.state !== 'running') {
+            this.resumePlay();
+        }
+        return undefined;
+    };
+    return SoundSystem;
+}());
+exports.SoundSystem = SoundSystem;
+exports.loadSound = function (url, soundSystem) {
+    return new Promise(function (resolve, reject) {
+        Xhr_1.xhr(url, 'GET')
+            .then(function (response) { return response.arrayBuffer(); })
+            .then(function (response) {
+            soundSystem.decodeSound(response).then(function (b) {
+                var sound = new Sound(b);
+                sound.buffer = b;
+                resolve(sound);
+            }, function (err) {
+                reject(err);
+            }).catch(function (e) { return console.error(e); });
+        }).catch(function (e) { return console.error(e); });
+    });
+};
+//# sourceMappingURL=andy.js.map
