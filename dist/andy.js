@@ -74,8 +74,10 @@ var SoundSystem = (function () {
                 }
                 SoundSystem.soundContext = new AudioContext_1();
                 SoundSystem.soundContext.onstatechange = this.handleStateChange;
+                SoundSystem.analyser = SoundSystem.soundContext.createAnalyser();
                 SoundSystem.masterGainNode = SoundSystem.soundContext.createGain();
                 SoundSystem.masterGainNode.connect(SoundSystem.soundContext.destination);
+                SoundSystem.masterGainNode.connect(SoundSystem.analyser);
                 window.addEventListener('focus', function (event) {
                     console.log('Resume Play');
                     _this.resumePlay();
@@ -88,6 +90,9 @@ var SoundSystem = (function () {
         catch (e) {
             console.error('Error creating Web Audio context', e);
         }
+    };
+    SoundSystem.prototype.getAnalyser = function () {
+        return SoundSystem.analyser;
     };
     SoundSystem.prototype.adjustVolume = function (by) {
         SoundSystem.masterGainNode.gain.value = by;

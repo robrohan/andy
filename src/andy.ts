@@ -72,6 +72,7 @@ export class SoundSystem {
   }
   static soundContext: AudioContext;
   static masterGainNode: GainNode;
+  static analyser: AnalyserNode;
 
   constructor(settings: SoundSystemOptions) {
     this.reboot();
@@ -90,8 +91,12 @@ export class SoundSystem {
         SoundSystem.soundContext = new AudioContext();
         SoundSystem.soundContext.onstatechange = this.handleStateChange;
 
+        SoundSystem.analyser = SoundSystem.soundContext.createAnalyser();
+
         SoundSystem.masterGainNode = SoundSystem.soundContext.createGain();
         SoundSystem.masterGainNode.connect(SoundSystem.soundContext.destination);
+
+        SoundSystem.masterGainNode.connect(SoundSystem.analyser);
 
         window.addEventListener('focus', (event: any) => {
           console.log('Resume Play');
@@ -103,6 +108,10 @@ export class SoundSystem {
     } catch (e) {
       console.error('Error creating Web Audio context', e);
     }
+  }
+
+  public getAnalyser(): AnalyserNode {
+    return SoundSystem.analyser;
   }
 
   public adjustVolume(by: number) {

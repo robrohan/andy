@@ -19,8 +19,10 @@ export declare class SoundSystem {
     static addSoundToContext(context: AudioContext, sound: Sound): void;
     static soundContext: AudioContext;
     static masterGainNode: GainNode;
+    static analyser: AnalyserNode;
     constructor(settings: SoundSystemOptions);
     reboot(): void;
+    getAnalyser(): AnalyserNode;
     adjustVolume(by: number): void;
     play(sound: Sound, loop?: boolean, time?: number): void;
     decodeSound(data: ArrayBuffer): Promise<AudioBuffer>;

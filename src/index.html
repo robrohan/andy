@@ -1,176 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-	<title>Andy</title>
-	<style>
-	 * { padding: 0; margin: 0; }
-	 html, body {
-             width: 100%;
-             height: 100%;
-             overflow: hidden;
-             font-family: Arial, Helvetica, sans-serif;
-	     z-index: 0;
-	     background: white;
-	 }
-	 body {
-	     padding: 16px;
-	 }
-	 button {
-	     min-width: 100px;
-	 }
 
-	 .space {
-	     margin-top: 50px;
-	     margin-bottom: 50px;
-	 }
+<head>
+  <title>Andy</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
 
-	 .panelholder {
-	     position: relative;
-	     height: 300px;
-	     width: 150px;
-	     background: silver;
-	     line-height: 300px;
-	     text-align: center;
-	 }
-	 .panel {
-	     position: absolute;
-	     background: black;
-	     color: white;
-	     height: 300px;
-	     width: 160px;
-	     line-height: 300px;
-	     text-align: center;
-	     transform: translateX(-150px);
-	 }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      z-index: 0;
+      background: white;
+    }
 
-	 @keyframes slide-in {
-	     0% { transform: translateX(-150px); }
-	     100% { transform: translateX(0px); }
-	 }
+    body {
+      padding: 16px;
+    }
 
-	 @keyframes slide-out {
-	     0% { transform: translateX(0); }
-	     100% { transform: translateX(-150px); }
-	 }
-	 .panel.show {
-	     animation: slide-in .5s;
-	     animation-fill-mode: forwards;
-	     animation-timing-function: cubic-bezier(0.130, -0.305, 0.655, 1.315);
-	 }
-	 .panel.hide {
-	     animation: slide-out .48s;
-	     animation-fill-mode: forwards;
-	     animation-timing-function: cubic-bezier(0.130, -0.305, 0.655, 1.315);
-	 }
+    button {
+      min-width: 100px;
+    }
 
-	 .modalbg {
-	     position: absolute;
-	     height: 100vh;
-	     width: 100vw;
-	     top: 0;
-	     left: 0;
-	     background: rgba(0,0,0,0.7);
-	     z-index: -100;
-	 }
-	 .modal {
-	     position: absolute;
-	     width: 300px;
-	     height: 200px;
-	     background: white;
-	     top: calc(50% - 100px);
-	     left: calc(50% - 150px);
-	     text-align: center;
-	     line-height: 70px;
-	     padding-top: 40px;
-	     z-index: -100;
-	     border-radius: 8px;
-	     box-shadow: 0px 0px 27px -4px rgba(0,0,0,0.75);
-	 }
-	 .modal button {
-	     width: 100px;
-	 }
+    .space {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
 
-	 /* ////////////////////////////////// */
-	 .modalbg.show {
-	     z-index: 100;
-	 }
-	 .modal.show {
-	     z-index: 100;
-	 }
+    .panelholder {
+      position: relative;
+      height: 300px;
+      width: 150px;
+      background: silver;
+      line-height: 300px;
+      text-align: center;
+    }
 
-	 .modalbg.hide {
-	     z-index: -100;
-	 }
-	 .modal.hide {
-	     z-index: -100;
-	 }
-	</style>
+    .panel {
+      position: absolute;
+      background: black;
+      color: white;
+      height: 300px;
+      width: 160px;
+      line-height: 300px;
+      text-align: center;
+      transform: translateX(-150px);
+    }
 
-	<script>
-	 function toggleVisibility(selector) {
-	     const lst = document.querySelector(selector).classList;
-	     if(!lst.contains("show")) {
-		 lst.remove("hide");
-		 lst.add("show");
-	     } else {
-		 lst.remove("show");
-		 lst.add("hide");
-	     }
-	 }
+    @keyframes slide-in {
+      0% {
+        transform: translateX(-150px);
+      }
 
-	 function showPanel() {
-	     window.sound.play(window.sounds.s4);
-	     toggleVisibility(".panel");
-	 }
-	 function uiSound() {
-	     window.sound.play(window.sounds.s0);
-	 }
+      100% {
+        transform: translateX(0px);
+      }
+    }
 
-	 function wrong() {
-	     toggleVisibility(".modalbg");
-	     toggleVisibility(".modal");
-	     window.sound.play(window.sounds.s1);
-	 }
-	 function dismiss() {
-	     toggleVisibility(".modalbg");
-	     toggleVisibility(".modal");
-	     uiSound();
-	 }
+    @keyframes slide-out {
+      0% {
+        transform: translateX(0);
+      }
 
+      100% {
+        transform: translateX(-150px);
+      }
+    }
 
+    .panel.show {
+      animation: slide-in .5s;
+      animation-fill-mode: forwards;
+      animation-timing-function: cubic-bezier(0.130, -0.305, 0.655, 1.315);
+    }
 
+    .panel.hide {
+      animation: slide-out .48s;
+      animation-fill-mode: forwards;
+      animation-timing-function: cubic-bezier(0.130, -0.305, 0.655, 1.315);
+    }
 
-	</script>
-	<script src="./example.js"></script>
-    </head>
-    <body>
+    .modalbg {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: -100;
+    }
 
-	<div class="space">
-	    <input type="radio" name="blarg" value="one" id="bone" onClick="uiSound()"><label for="bone">One</label><br>
-	    <input type="radio" name="blarg" value="two" id="btwo" onClick="uiSound()"><label for="btwo">Two</label><br>
-	    <input type="radio" name="blarg" value="three" id="bthree" onClick="uiSound()"><label for="bthree">Three</label><br>
-	</div>
+    .modal {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      background: white;
+      top: calc(50% - 100px);
+      left: calc(50% - 150px);
+      text-align: center;
+      line-height: 70px;
+      padding-top: 40px;
+      z-index: -100;
+      border-radius: 8px;
+      box-shadow: 0px 0px 27px -4px rgba(0, 0, 0, 0.75);
+    }
 
-	<div class="space">
-	    <button id="s0" onClick="wrong()">Click Me</button>
-	</div>
+    .modal button {
+      width: 100px;
+    }
 
-	<!-- <button id="s1">s1</button>
-	     <button id="s2">s2</button>
-	     <button id="s3">s3</button> -->
+    /* ////////////////////////////////// */
+    .modalbg.show {
+      z-index: 100;
+    }
 
-	<div class="space">
-	    <div class="panelholder" onClick="showPanel()">
-		<div class="panel">Hello!</div>
-		Click me!
-	    </div>
-	</div>
+    .modal.show {
+      z-index: 100;
+    }
 
-	<div class="modalbg"></div>
-	<div class="modal">
-	    WRONG!<br>
-	    <button onClick="dismiss()">OK</button>
-	</div>
+    .modalbg.hide {
+      z-index: -100;
+    }
 
-    </body>
+    .modal.hide {
+      z-index: -100;
+    }
+  </style>
+
+  <script>
+    function toggleVisibility(selector) {
+      const lst = document.querySelector(selector).classList;
+      if (!lst.contains("show")) {
+        lst.remove("hide");
+        lst.add("show");
+      } else {
+        lst.remove("show");
+        lst.add("hide");
+      }
+    }
+
+    function showPanel() {
+      window.sound.play(window.sounds.s4);
+      toggleVisibility(".panel");
+    }
+    function uiSound() {
+      window.sound.play(window.sounds.s0);
+    }
+
+    function wrong() {
+      toggleVisibility(".modalbg");
+      toggleVisibility(".modal");
+      window.sound.play(window.sounds.s1);
+    }
+    function dismiss() {
+      toggleVisibility(".modalbg");
+      toggleVisibility(".modal");
+      uiSound();
+    }
+
+    /////////////////////////////////////////
+    let waveform;
+    let spectrum;
+    let analyser;
+    function init() {
+      window.initSoundSystem().then(() => {
+        analyser = window.sound.getAnalyser();
+        waveform = new Float32Array(analyser.frequencyBinCount);
+        spectrum = new Uint8Array(analyser.frequencyBinCount)
+
+        updateWaveForm(0);
+        drawOscilloscope(0);
+        drawSpectrogram(0);
+      });
+    }
+
+    function updateWaveForm(time) {
+      requestAnimationFrame(updateWaveForm);
+
+      analyser.getFloatTimeDomainData(waveform);
+      analyser.getByteFrequencyData(spectrum);
+    }
+
+    /////////////////////////////////////////
+    function drawOscilloscope(time) {
+      // This is not the right place for this, but for demo...
+      const scopeCanvas = document.getElementById('oscilloscope');
+      scopeCanvas.width = waveform.length;
+      scopeCanvas.height = 200;
+      const scopeContext = scopeCanvas.getContext('2d');
+
+      requestAnimationFrame(drawOscilloscope);
+      scopeContext.clearRect(0, 0, scopeCanvas.width, scopeCanvas.height);
+      scopeContext.beginPath();
+      for (let i = 0; i < waveform.length; i++) {
+        const x = i;
+        const y = (0.5 + waveform[i] / 2) * scopeCanvas.height;
+        if (i == 0) {
+          scopeContext.moveTo(x, y);
+        } else {
+          scopeContext.lineTo(x, y);
+        }
+      }
+      scopeContext.stroke();
+    }
+
+    /////////////////////////////////////////
+
+    function drawSpectrogram(time) {
+      requestAnimationFrame(drawSpectrogram);
+
+      const spectroCanvas = document.getElementById('spectrogram');
+      spectroCanvas.width = spectrum.length;
+      spectroCanvas.height = 200;
+      const spectroContext = spectroCanvas.getContext('2d');
+      let spectroOffset = 0;
+
+      const slice = spectroContext.getImageData(0, spectroOffset, spectroCanvas.width, 1);
+      for (let i = 0; i < spectrum.length; i++) {
+        slice.data[4 * i + 0] = spectrum[i]; // R
+        slice.data[4 * i + 1] = spectrum[i]; // G
+        slice.data[4 * i + 2] = spectrum[i]; // B
+        slice.data[4 * i + 3] = 255;         // A
+      }
+      spectroContext.putImageData(slice, 0, spectroOffset);
+      spectroOffset += 1;
+      spectroOffset %= spectroCanvas.height;
+    }
+
+  </script>
+  <script src="./example.js"></script>
+</head>
+
+<body onload="init()">
+
+  <div class="space">
+    <input type="radio" name="blarg" value="one" id="bone" onClick="uiSound()"><label for="bone">One</label><br>
+    <input type="radio" name="blarg" value="two" id="btwo" onClick="uiSound()"><label for="btwo">Two</label><br>
+    <input type="radio" name="blarg" value="three" id="bthree" onClick="uiSound()"><label for="bthree">Three</label><br>
+  </div>
+
+  <div class="space">
+    <button id="s0" onClick="wrong()">Click Me</button>
+  </div>
+
+  <div class="space">
+    <div class="panelholder" onClick="showPanel()">
+      <div class="panel">Hello!</div>
+      Click me!
+    </div>
+  </div>
+
+  <canvas id="oscilloscope"></canvas>
+
+  <canvas id="spectrogram" height="200"></canvas>
+
+  <div class="modalbg"></div>
+  <div class="modal">
+    WRONG!<br>
+    <button onClick="dismiss()">OK</button>
+  </div>
+
+</body>
+
 </html>
